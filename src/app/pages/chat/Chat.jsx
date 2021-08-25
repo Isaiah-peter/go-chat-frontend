@@ -4,7 +4,7 @@ import Message from "../../component/message/Message";
 import Status from "../../component/status/Status";
 import "./chat.css";
 
-const baseURL = "ws://localhost:8080/chat";
+const baseURL = "ws://192.168.88.156:8080/chat";
 
 export default class Chat extends Component {
   constructor(props) {
@@ -22,19 +22,23 @@ export default class Chat extends Component {
     return (
       <div className="chat">
         <h1>webchat</h1>
-        <Status status={ws ? "connected" : "disconnected"} />
+        <Status status={ws !== undefined ? "connected" : "disconnected"} />
         {ws && <Message message={messages} />}
         <div className="chat-input">
           <InputText
-            placeholder={ws ? "Enter message" : "Write username"}
+            placeholder={ws !== undefined ? "Enter message" : "Write username"}
             onChange={(value) =>
               ws ? this.setMessage(value) : this.setUsername(value)
             }
-            defaultValue={ws ? this.state.message : this.state.username}
+            defaultValue={
+              ws !== undefined ? this.state.message : this.state.username
+            }
           />
           <button
             type="button"
-            onClick={() => (ws ? this.sendMessage() : this.enterChat())}
+            onClick={() =>
+              ws !== undefined ? this.sendMessage() : this.enterChat()
+            }
           >
             {ws ? "sent" : "login"}
           </button>
